@@ -1,0 +1,24 @@
+.btn {
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  margin: 0 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-transform: capitalize;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 150ms ease-in;
+}
+.btn:hover {
+  transform: scale(1.1);
+}
+.good {
+  background-color: green;
+}
+.neutral {
+  background-color: tomato;
+}
+.bad {
+  background-color: red;
+}
