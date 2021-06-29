@@ -1,8 +1,8 @@
 {
-  "name": "02-feedback",
+  "name": "02-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://horiisoft.h1n.ru/hw/02-feedback",
+  "homepage": "http://horiisoft.h1n.ru/hw/02-phonebook",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -12,6 +12,7 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-scripts": "4.0.3",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
