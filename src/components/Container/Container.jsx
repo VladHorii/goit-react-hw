@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import css from './Container.module.css';
+
 function Container({ children }) {
   return (
     <>
@@ -6,5 +8,9 @@ function Container({ children }) {
     </>
   );
 }
+
+Container.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default Container;
