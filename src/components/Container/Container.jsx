@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import css from './Container.module.css';
+import { Wrapper } from './Container.styled';
 
 function Container({ children }) {
   return (
     <>
-      <div className={css.container}>{children}</div>
+      <Wrapper>{children}</Wrapper>
     </>
   );
 }

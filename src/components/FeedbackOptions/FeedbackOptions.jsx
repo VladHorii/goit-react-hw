@@ -1,17 +1,17 @@
-import css from './FeedbackOptions.module.css';
+import { Button } from './FeedbackOptions.styled';
 
 function FeedbackOptions({ optoins, onLeaveFeedback }) {
   return (
     <>
       {Object.keys(optoins).map(option => (
-        <button
-          className={`${css.btn} ${css[option]}`}
+        <Button
+          option={option}
           key={option}
           type="button"
           onClick={() => onLeaveFeedback(option)}
         >
           {option}
-        </button>
+        </Button>
       ))}
     </>
   );
