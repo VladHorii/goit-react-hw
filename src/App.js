@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
 import Searchbar from './components/Searchbar';
 import LoadMoreBtn from './components/Button';
@@ -10,21 +10,14 @@ import LoaderSpinner from './components/LoaderSpinner';
 import PixabayApi from './services/pixabayApi';
 const pixabayApi = new PixabayApi();
 
-export default class App extends Component {
-  state = {
-    imageGalleryItems: [],
-    isModalActive: false,
-    modalImageData: {},
-    isLoading: false,
-    spinner: true,
-  };
+export default function App() {
+  const [imageGalleryItems, setImageGalleryItems] = useState([]);
+  const [isModalActive, setIsModalActive] = useState(false);
+  const [modalImageData, setModalImageData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  /**
-   * Функция для поиска картинок
-   * Возвращает массив обьектов стостоящих из id, largeImageURL, webformatURL, tags
-   */
-  searchPicture = async () => {
-    this.toggleLoaderSpinner();
+  const searchPicture = async () => {
+    toggleLoaderSpinner();
     const response = await pixabayApi.fetchPicture();
     const imageInfo = response.map(
       ({ id, largeImageURL, webformatURL, tags }) => ({
@@ -34,63 +27,55 @@ export default class App extends Component {
         tags,
       }),
     );
-    this.toggleLoaderSpinner();
+    toggleLoaderSpinner();
     return imageInfo;
   };
 
-  onSubmitSearchForm = async query => {
+  const onSubmitSearchForm = async query => {
     pixabayApi.query = query;
     pixabayApi.resetPage();
-    const imageInfo = await this.searchPicture();
-
-    this.setState({ imageGalleryItems: imageInfo });
+    const imageInfo = await searchPicture();
+    setImageGalleryItems(imageInfo);
   };
-  onClickLoadMoreBtn = async () => {
+  const onClickLoadMoreBtn = async () => {
     pixabayApi.incrementPage();
-    const imageInfo = await this.searchPicture();
+    const imageInfo = await searchPicture();
 
-    this.setState(prevState => ({
-      imageGalleryItems: [...prevState.imageGalleryItems, ...imageInfo],
-    }));
+    setImageGalleryItems(prevState => [...prevState, ...imageInfo]);
+
     return true;
   };
 
-  toggleModal = (modalImageData = {}) => {
-    this.setState(prevState => ({
-      isModalActive: !prevState.isModalActive,
-      modalImageData,
-    }));
+  const toggleModal = (modalImageData = {}) => {
+    setIsModalActive(prevState => !prevState);
+    setModalImageData(modalImageData);
   };
 
-  toggleLoaderSpinner = () => {
-    this.setState(prevState => ({ isLoading: !prevState.isLoading }));
+  const toggleLoaderSpinner = () => {
+    setIsLoading(prevState => !prevState);
   };
 
-  render() {
-    const { imageGalleryItems, isModalActive, modalImageData, isLoading } =
-      this.state;
-    return (
+  return (
+    <>
+      <div className="App">
+        <Searchbar onSubmit={onSubmitSearchForm} />
+
+        {imageGalleryItems.length > 0 && (
+          <>
+            <ImageGallery
+              imagesData={imageGalleryItems}
+              toggleModal={toggleModal}
+            />
+            <LoadMoreBtn onClick={onClickLoadMoreBtn} />
+          </>
+        )}
+      </div>
       <>
-        <div className="App">
-          <Searchbar onSubmit={this.onSubmitSearchForm} />
-
-          {imageGalleryItems.length > 0 && (
-            <>
-              <ImageGallery
-                imagesData={imageGalleryItems}
-                toggleModal={this.toggleModal}
-              />
-              <LoadMoreBtn onClick={this.onClickLoadMoreBtn} />
-            </>
-          )}
-        </div>
-        <>
-          {isLoading && <LoaderSpinner />}
-          {isModalActive && (
-            <Modal data={modalImageData} toggleModal={this.toggleModal} />
-          )}
-        </>
+        {isLoading && <LoaderSpinner />}
+        {isModalActive && (
+          <Modal data={modalImageData} toggleModal={toggleModal} />
+        )}
       </>
-    );
-  }
+    </>
+  );
 }
