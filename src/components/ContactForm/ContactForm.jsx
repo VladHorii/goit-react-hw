@@ -1,46 +1,45 @@
 // import PropTypes from 'prop-types';
 
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-
+import { useState } from 'react';
 import css from './ContactForm.module.css';
 
-export default class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
-
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
-
-  addToContacts = e => {
+export default function ContactForm({onSubmit}){
+  const [name, setName] = useState();
+  const [number, setNumber] = useState('');
+  
+  function addToContacts(e) {
     e.preventDefault();
 
-    const { name, number } = this.state;
-
-    const res = this.props.onSubmit(name, number);
-
+    const res = onSubmit(name, number);
     if (res) {
-      this.resetForm();
+      resetForm();
     }
   };
 
-  handleChange = e => {
+  function handleChange(e) {
     const { name, value } = e.currentTarget;
 
-    this.setState({ [name]: value });
+    switch (name) {
+      case 'name':
+        setName(value)
+        break;
+      case 'number':
+        setNumber(value)
+        break;
+    
+      default:
+        break;
+    }
   };
 
-  resetForm = () => {
-    this.setState({ name: '', number: '' });
+  function resetForm() {
+    setNumber('')
+    setName('')
   };
 
-  render() {
-    const { name, number } = this.state;
+
     return (
-      <form onSubmit={this.addToContacts} className={css.form}>
+      <form onSubmit={addToContacts} className={css.form}>
         <label className={css.group}>
           Name
           <input
@@ -50,7 +49,7 @@ export default class ContactForm extends Component {
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             autoComplete="off"
             value={name}
-            onChange={this.handleChange}
+            onChange={handleChange}
             required
           />
         </label>
@@ -64,7 +63,7 @@ export default class ContactForm extends Component {
             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
             autoComplete="off"
             value={number}
-            onChange={this.handleChange}
+            onChange={handleChange}
             required
           />
         </label>
@@ -75,5 +74,5 @@ export default class ContactForm extends Component {
         </div>
       </form>
     );
-  }
 }
+
