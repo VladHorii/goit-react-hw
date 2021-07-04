@@ -1,7 +1,6 @@
 import styled from '@emotion/styled/macro';
 
 const getBgColor = ({ option }) => {
-  console.log(option);
   switch (option) {
     case 'good':
       return 'green';
