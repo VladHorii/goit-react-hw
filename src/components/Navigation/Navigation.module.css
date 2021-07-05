@@ -1,0 +1,19 @@
+.navList {
+  display: flex;
+  list-style: none;
+}
+.navItem:not(:last-child) {
+  margin-right: 15px;
+}
+.navLink {
+  font-size: 20px;
+  text-decoration: none;
+  color: #212121;
+}
+.navLink:hover,
+.navLink:focus {
+  color: #166174fb;
+}
+.navLinkActive {
+  color: #3f51b5;
+}
