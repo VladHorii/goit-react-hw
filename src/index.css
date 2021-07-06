@@ -26,12 +26,25 @@ img {
   height: auto;
 }
 
-/*
- * Стили компонента App
- */
-.App {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 16px;
-  padding-bottom: 24px;
+ul {
+  list-style: none;
+}
+
+.movies-list-item + .movies-list-item {
+  margin-top: 7px;
+}
+.home-page-title {
+  text-align: center;
+}
+.search-form {
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+}
+
+.movie-details-container {
+  display: flex;
+}
+.movie-details-info {
+  margin-left: 40px;
 }
