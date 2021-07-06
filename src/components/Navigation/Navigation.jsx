@@ -18,7 +18,6 @@ export default function Navigation() {
 
         <li className={css.navItem}>
           <NavLink
-            exact
             to="/movies"
             className={css.navLink}
             activeClassName={css.navLinkActive}

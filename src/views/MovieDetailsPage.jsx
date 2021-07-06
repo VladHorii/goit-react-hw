@@ -1,18 +1,127 @@
+import {
+  useParams,
+  Link,
+  useRouteMatch,
+  Route,
+  Switch,
+  useLocation,
+  useHistory,
+} from 'react-router-dom';
+import { useState, useEffect, Suspense } from 'react';
+
+import Button from '@material-ui/core/Button';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
+import Cast from '../components/Cast';
+import Reviews from '../components/Reviews';
+
+import MovieService from '../services/moviesApi';
+const movieService = new MovieService();
+
+const STATIC_IMG_PATH = 'https://image.tmdb.org/t/p/original/';
+const imgNotFound =
+  'https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg';
+
 export default function MovieDetailsPage() {
+  const { movieId } = useParams();
+  const [movieInfo, setMovieInfo] = useState(null);
+  const { url } = useRouteMatch();
+
+  const location = useLocation();
+  const history = useHistory();
+
+  const goBackLocation = location?.state?.from;
+
+  useEffect(() => {
+    movieService.fetchMovieInfo(movieId).then(setMovieInfo);
+  }, [movieId]);
+
+  const onClickGoBackBtn = () => {
+    history.push(goBackLocation);
+  };
   return (
     <>
-      <img src="#" alt="img_name" />
-      <h3>Movie title</h3>
-      <p>User Score: 00%</p>
-      <h4>Overview</h4>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio
-        molestias laboriosam error voluptas fuga harum, doloremque sit delectus!
-        Culpa ad quod tempora animi voluptate incidunt temporibus sit ab illum
-        laboriosam.
-      </p>
-      <h4>Genres </h4>
-      <p>One Two Three</p>
+      {goBackLocation && (
+        // <button type="button" onClick={onClickGoBackBtn}>
+        //   {'<= Go back'}
+        // </button>
+        <Button
+          variant="contained"
+          color="default"
+          startIcon={<ArrowBackIcon />}
+          type="button"
+          onClick={onClickGoBackBtn}
+        >
+          Go back
+        </Button>
+      )}
+      {movieInfo && (
+        <>
+          <div className="movie-details-container">
+            <img
+              src={
+                movieInfo.poster_path
+                  ? `${STATIC_IMG_PATH}${movieInfo.poster_path}`
+                  : imgNotFound
+              }
+              alt={movieInfo.original_title}
+              width="240"
+            />
+            <div className="movie-details-info">
+              <h3>{movieInfo.original_title}</h3>
+              <p>User Score: {movieInfo.vote_average * 10}%</p>
+              <h4>Genres</h4>
+              <p>{movieInfo.genres.map(({ name }) => name).join(', ')}</p>
+              <h4>Overview</h4>
+              <p>{movieInfo.overview}</p>
+            </div>
+          </div>
+
+          <hr />
+          <p>Additional information</p>
+          <ul>
+            <li>
+              <Link
+                to={{
+                  pathname: `${url}/cast`,
+                  state: { from: goBackLocation },
+                }}
+              >
+                <Button color="primary" variant="outlined">
+                  Cast
+                </Button>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={{
+                  pathname: `${url}/reviews`,
+                  state: { from: goBackLocation },
+                }}
+              >
+                <Button color="primary" variant="outlined">
+                  Reviews
+                </Button>
+              </Link>
+            </li>
+          </ul>
+          <hr />
+          <Suspense fallback="<p>Loading...</p>">
+            <Switch>
+              <Route path={`${url}/cast`}>
+                <Cast
+                  id={movieId}
+                  imgPath={STATIC_IMG_PATH}
+                  imgNotFound={imgNotFound}
+                />
+              </Route>
+              <Route path={`${url}/reviews`}>
+                <Reviews id={movieId} />
+              </Route>
+            </Switch>
+          </Suspense>
+        </>
+      )}
     </>
   );
 }

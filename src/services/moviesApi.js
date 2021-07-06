@@ -5,7 +5,6 @@ axios.defaults.baseURL = 'https://api.themoviedb.org/3';
 export default class MovieService {
   constructor() {
     this.searchQuery = '';
-    this.page = 1;
     this.id = '';
     this.key = '0558fb418099b1d6ef291e53504aa0aa';
   }
@@ -13,7 +12,7 @@ export default class MovieService {
   async fetchMovies() {
     try {
       const response = await axios.get(
-        `/trending/movie/day?api_key=${this.key}&page=${this.page}`,
+        `/trending/movie/day?api_key=${this.key}`,
       );
       return response.data;
     } catch (error) {
@@ -21,10 +20,25 @@ export default class MovieService {
     }
   }
 
-  async fetchGenre() {
+  async fetchMovieInfo(id = this.id) {
+    if (id !== this.id) {
+      this.id = id;
+    }
+    try {
+      const response = await axios.get(`/movie/${this.id}?api_key=${this.key}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async fetchMovieCast(id = this.id) {
+    if (id !== this.id) {
+      this.id = id;
+    }
     try {
       const response = await axios.get(
-        `/genre/movie/list?api_key=${this.key}&language=en-US`,
+        `/movie/${this.id}/credits?api_key=${this.key}`,
       );
       return response.data;
     } catch (error) {
@@ -32,10 +46,13 @@ export default class MovieService {
     }
   }
 
-  async fetchMovieInfo() {
+  async fetchMovieReviews(id = this.id) {
+    if (id !== this.id) {
+      this.id = id;
+    }
     try {
       const response = await axios.get(
-        `/movie/${this.id}?api_key=${this.key}&language=en-US`,
+        `/movie/${this.id}/reviews?api_key=${this.key}`,
       );
       return response.data;
     } catch (error) {
@@ -43,30 +60,19 @@ export default class MovieService {
     }
   }
 
-  async fetchMoviesWithQuery() {
+  async fetchMoviesWithQuery(query = this.searchQuery) {
+    if (query !== this.searchQuery) {
+      this.searchQuery = query;
+    }
+
     try {
       const response = await axios.get(
-        `/search/movie/?api_key=${this.key}&query=${this.searchQuery}&page=${this.page}&language=en-US`,
+        `/search/movie/?api_key=${this.key}&query=${this.searchQuery}`,
       );
       return response.data;
     } catch (error) {
       throw new Error(error);
     }
-  }
-
-  nextPage() {
-    this.page += 1;
-  }
-
-  previousPage() {
-    this.page -= 1;
-  }
-  resetPage() {
-    this.page = 1;
-  }
-
-  setPage(page) {
-    this.page = page;
   }
 
   get query() {
