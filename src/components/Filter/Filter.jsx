@@ -1,7 +1,14 @@
-// import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import phoneBookActions from '../../redux/phoneBook/phoneBook-actions';
 import css from './Filter.module.css';
+import { getFilter } from '../../redux/phoneBook/phoneBook-selectors';
 
-function Filter({ filter, onChange }) {
+function Filter() {
+  const dispatch = useDispatch();
+  const filter = useSelector(getFilter);
+
+  const onChange = e => dispatch(phoneBookActions.changeFilter(e.target.value));
+
   return (
     <>
       <label className={css.group}>
@@ -17,9 +24,5 @@ function Filter({ filter, onChange }) {
     </>
   );
 }
-
-// Filter.propTypes = {
-//   message: PropTypes.string.isRequired,
-// };
 
 export default Filter;
