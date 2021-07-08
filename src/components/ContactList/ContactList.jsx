@@ -1,16 +1,42 @@
 import { useDispatch, useSelector } from 'react-redux';
 import css from './ContactList.module.css';
-import phoneBookActions from '../../redux/phoneBook/phoneBook-actions';
-import { getVisibleContacts } from '../../redux/phoneBook/phoneBook-selectors';
+import {
+  fetchContacts,
+  deleteContact,
+} from '../../redux/phoneBook/phoneBook-operations';
+import {
+  getVisibleContacts,
+  getError,
+  getIsLoading,
+} from '../../redux/phoneBook/phoneBook-selectors';
+import { useEffect } from 'react';
 
 function ContactList() {
   const dispatch = useDispatch();
   const contacts = useSelector(getVisibleContacts);
+  const error = useSelector(getError);
+  const isLoading = useSelector(getIsLoading);
 
-  const onDeleteContact = id => dispatch(phoneBookActions.removeContact(id));
+  const onDeleteContact = id => {
+    dispatch(deleteContact(id));
+  };
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  if (error) {
+    return (
+      <>
+        <p>{error}</p>
+      </>
+    );
+  }
 
   return (
     <>
+      {isLoading && <p>Loading...</p>}
+
       {contacts?.length > 0 ? (
         <ul>
           {contacts.map(contact => (

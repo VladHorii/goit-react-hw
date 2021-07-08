@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-
+import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import css from './ContactForm.module.css';
-import phoneBookActions from '../../redux/phoneBook/phoneBook-actions';
+
+import { addContact } from '../../redux/phoneBook/phoneBook-operations';
 import { getContacts } from '../../redux/phoneBook/phoneBook-selectors';
 
 function ContactForm() {
@@ -23,7 +24,13 @@ function ContactForm() {
       return alert(`${name} or number ${number} is already in contacts.`);
     }
 
-    dispatch(phoneBookActions.addContact(name, number));
+    dispatch(
+      addContact({
+        id: uuidv4(),
+        name,
+        number,
+      }),
+    );
     resetForm();
   }
 
