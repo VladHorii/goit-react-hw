@@ -1,41 +1,63 @@
 //
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Form, Input, Button } from 'antd';
+import { MailOutlined, LockOutlined } from '@ant-design/icons';
+
 import { authOperations } from '../../redux/auth';
-import css from './AuthForm.module.css';
 
 function ContactForm() {
   const dispatch = useDispatch();
 
-  function onFormSubmit(e) {
-    e.preventDefault();
-    const elements = e.target.elements;
-    const email = elements.email.value;
-    const password = elements.password.value;
+  const onFormSubmit = values => {
+    const email = values.email;
+    const password = values.password;
 
     dispatch(authOperations.login({ email, password }));
-  }
+  };
 
   return (
-    <form onSubmit={onFormSubmit} className={css.form} autoComplete="off">
-      <h3>Authorization</h3>
-      <label className={css.group}>
-        Email
-        <input type="mail" name="email" />
-      </label>
+    <div className="wrapper">
+      <Form
+        name="normal_login"
+        className="login-form"
+        initialValues={{ remember: true }}
+        onFinish={onFormSubmit}
+        autoComplete="off"
+      >
+        <h3>Authorization</h3>
+        <Form.Item
+          name="email"
+          rules={[{ required: true, message: 'Please input your Email!' }]}
+        >
+          <Input
+            prefix={<MailOutlined className="site-form-item-icon" />}
+            placeholder="Email"
+          />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: 'Please input your Password!' }]}
+        >
+          <Input.Password
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            placeholder="Password"
+          />
+        </Form.Item>
 
-      <label className={css.group}>
-        Password
-        <input type="password" name="password" />
-      </label>
-
-      <div className={css.center}>
-        <button type="submit" className={css.btn}>
-          Login
-        </button>
-      </div>
-      <Link to="/register">Create a new account</Link>
-    </form>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+          >
+            Log in
+          </Button>
+          Or <Link to="/register">register now!</Link>
+        </Form.Item>
+      </Form>
+    </div>
   );
 }
 

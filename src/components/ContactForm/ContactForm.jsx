@@ -1,20 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
-import css from './ContactForm.module.css';
+import { Form, Input, Button } from 'antd';
+import { MobileOutlined, UserAddOutlined } from '@ant-design/icons';
 
 import { addContact } from '../../redux/phoneBook/phoneBook-operations';
 import { getContacts } from '../../redux/phoneBook/phoneBook-selectors';
 
 function ContactForm() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
+  const [form] = Form.useForm();
 
-  function addToContacts(e) {
-    e.preventDefault();
+  const addToContacts = values => {
+    const name = values.name;
+    const number = values.number;
 
     const isExistsContact = contacts.find(
       contact => contact.name === name || contact.number === number,
@@ -26,68 +24,48 @@ function ContactForm() {
 
     dispatch(
       addContact({
-        id: uuidv4(),
         name,
         number,
       }),
     );
-    resetForm();
-  }
-
-  function handleChange(e) {
-    const { name, value } = e.currentTarget;
-
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  function resetForm() {
-    setNumber('');
-    setName('');
-  }
+    form.resetFields();
+  };
 
   return (
-    <form onSubmit={addToContacts} className={css.form} autoComplete="off">
-      <label className={css.group}>
-        Name
-        <input
-          type="text"
-          name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-          value={name}
-          onChange={handleChange}
-          required
+    <Form
+      form={form}
+      name="normal_login"
+      className="contact-from"
+      initialValues={{ remember: true }}
+      onFinish={addToContacts}
+      autoComplete="off"
+    >
+      <Form.Item
+        name="name"
+        rules={[{ required: true, message: 'Please input your Name!' }]}
+      >
+        <Input
+          prefix={<UserAddOutlined className="site-form-item-icon" />}
+          placeholder="Name"
         />
-      </label>
+      </Form.Item>
 
-      <label className={css.group}>
-        Number
-        <input
-          type="tel"
-          name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-          value={number}
-          onChange={handleChange}
-          required
+      <Form.Item
+        name="number"
+        rules={[{ required: true, message: 'Please input your Number!' }]}
+      >
+        <Input
+          prefix={<MobileOutlined className="site-form-item-icon" />}
+          placeholder="Number"
         />
-      </label>
-      <div className={css.center}>
-        <button type="submit" className={css.btn}>
+      </Form.Item>
+
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="login-form-button">
           Add contact
-        </button>
-      </div>
-    </form>
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }
 

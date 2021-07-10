@@ -27,8 +27,9 @@ export default function App() {
 
   return (
     <>
+      {isAuth && <UserMenu />}
+
       <Container>
-        {isAuth && <UserMenu />}
         <Switch>
           <Suspense fallback={<p>Loading...</p>}>
             <PublicRoute exact path="/" redirectTo="/contacts" restricted>
