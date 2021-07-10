@@ -1,0 +1,30 @@
+.form {
+  border: 1px solid black;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+.btn {
+  margin-top: 15px;
+  width: 80%;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+
+  transform: scale(1);
+  transition: transform 150ms ease-in;
+}
+.btn:hover {
+  transform: scale(1.1);
+}
+.center {
+  display: flex;
+  justify-content: center;
+}
