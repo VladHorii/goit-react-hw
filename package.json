@@ -1,8 +1,8 @@
 {
-  "name": "02-phonebook",
+  "name": "08-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://horiisoft.h1n.ru/hw/02-phonebook",
+  "homepage": "http://horiisoft.h1n.ru/hw/08-phonebook",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.0",
     "@testing-library/jest-dom": "^5.14.1",
