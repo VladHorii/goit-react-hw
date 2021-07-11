@@ -48,7 +48,6 @@ const refreshUser = createAsyncThunk('auth/refresh', async (_, thunkAPI) => {
   const persistedToken = state.auth.token;
 
   if (persistedToken === null) {
-    console.log('Токена нет, уходим из refreshUser');
     return thunkAPI.rejectWithValue();
   }
 
@@ -62,12 +61,13 @@ const refreshUser = createAsyncThunk('auth/refresh', async (_, thunkAPI) => {
   }
 });
 
-const logOut = createAsyncThunk('auth/logout', async () => {
+const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     await axios.post('/users/logout');
     token.unset();
   } catch (error) {
-    // TODO: Добавить обработку ошибки error.message
+    toast.error('Failed to refreshed');
+    return thunkAPI.rejectWithValue(error.message);
   }
 });
 
