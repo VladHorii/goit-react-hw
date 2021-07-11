@@ -1,6 +1,6 @@
 import { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import { Switch } from 'react-router-dom';
 
 // components
@@ -8,14 +8,16 @@ import Container from './components/Container';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import UserMenu from './components/UserMenu';
+import LoaderSpinner from './components/LoaderSpinner';
+
+// utils
+import { authOperations, authSelectors } from './redux/auth';
 
 // pages
-import RegistrationPage from './views/RegistrationPage';
-import LoginPage from './views/LoginPage';
-import PhoneBookPage from './views/PhoneBookPage';
-import HomePage from './views/HomePage';
-
-import { authOperations, authSelectors } from './redux/auth';
+const RegistrationPage = lazy(() => import('./views/RegistrationPage'));
+const LoginPage = lazy(() => import('./views/LoginPage'));
+const PhoneBookPage = lazy(() => import('./views/PhoneBookPage'));
+const HomePage = lazy(() => import('./views/HomePage'));
 
 export default function App() {
   const dispatch = useDispatch();
@@ -29,9 +31,9 @@ export default function App() {
     <>
       {isAuth && <UserMenu />}
 
-      <Container>
-        <Switch>
-          <Suspense fallback={<p>Loading...</p>}>
+      <Switch>
+        <Suspense fallback={<LoaderSpinner />}>
+          <Container>
             <PublicRoute exact path="/" redirectTo="/contacts" restricted>
               <HomePage />
             </PublicRoute>
@@ -44,9 +46,9 @@ export default function App() {
             <PrivateRoute path="/contacts">
               <PhoneBookPage />
             </PrivateRoute>
-          </Suspense>
-        </Switch>
-      </Container>
+          </Container>
+        </Suspense>
+      </Switch>
       <Toaster position="top-right" />
     </>
   );
