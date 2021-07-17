@@ -1,14 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Searchbar from './components/Searchbar';
 import LoadMoreBtn from './components/Button';
-// import Container from './components/Container';
 import ImageGallery from './components/ImageGallery';
 import Modal from './components/Modal';
 import LoaderSpinner from './components/LoaderSpinner';
 
-import PixabayApi from './services/pixabayApi';
-const pixabayApi = new PixabayApi();
+import { fetchPicture } from './services/pixabayApi';
 
 export default function App() {
   const [imageGalleryItems, setImageGalleryItems] = useState([]);
@@ -16,34 +14,47 @@ export default function App() {
   const [modalImageData, setModalImageData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const searchPicture = async () => {
-    toggleLoaderSpinner();
-    const response = await pixabayApi.fetchPicture();
-    const imageInfo = response.map(
-      ({ id, largeImageURL, webformatURL, tags }) => ({
-        id,
-        largeImageURL,
-        webformatURL,
-        tags,
-      }),
-    );
-    toggleLoaderSpinner();
-    return imageInfo;
-  };
+  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      return;
+    }
+    if (page === 1) {
+      setImageGalleryItems([]);
+    }
+
+    const searchPicture = async () => {
+      toggleLoaderSpinner();
+      const response = await fetchPicture(searchQuery, page);
+      const imageInfo = response.map(
+        ({ id, largeImageURL, webformatURL, tags }) => ({
+          id,
+          largeImageURL,
+          webformatURL,
+          tags,
+        }),
+      );
+      toggleLoaderSpinner();
+      return imageInfo;
+    };
+
+    searchPicture().then(imageInfo => {
+      setImageGalleryItems(prevState => [...prevState, ...imageInfo]);
+
+      if (page !== 1) {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    });
+  }, [page, searchQuery]);
 
   const onSubmitSearchForm = async query => {
-    pixabayApi.query = query;
-    pixabayApi.resetPage();
-    const imageInfo = await searchPicture();
-    setImageGalleryItems(imageInfo);
-  };
-  const onClickLoadMoreBtn = async () => {
-    pixabayApi.incrementPage();
-    const imageInfo = await searchPicture();
-
-    setImageGalleryItems(prevState => [...prevState, ...imageInfo]);
-
-    return true;
+    setSearchQuery(query);
+    setPage(1);
   };
 
   const toggleModal = (modalImageData = {}) => {
@@ -66,7 +77,7 @@ export default function App() {
               imagesData={imageGalleryItems}
               toggleModal={toggleModal}
             />
-            <LoadMoreBtn onClick={onClickLoadMoreBtn} />
+            <LoadMoreBtn onClick={() => setPage(page => page + 1)} />
           </>
         )}
       </div>
