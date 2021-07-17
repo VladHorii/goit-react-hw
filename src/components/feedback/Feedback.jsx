@@ -1,22 +1,22 @@
-import { Component, useState } from 'react';
+import { useState } from 'react';
 
 import Section from '../Section';
 import Statistics from '../Statistics';
 import FeedbackOptions from '../FeedbackOptions';
 
-export default function Feedback(){
+export default function Feedback() {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
   function countTotalFeedback() {
     return good + neutral + bad;
-  };
+  }
 
-  function countPositiveFeedbackPercentage() {
+  function positiveFeedback() {
     const percent = (good * 100) / countTotalFeedback();
-    return percent;
-  };
+    return Math.round(percent);
+  }
 
   function incrementFeedback(feedback) {
     switch (feedback) {
@@ -32,11 +32,7 @@ export default function Feedback(){
       default:
         break;
     }
-  };
-  function positiveFeedback() {
-    return Math.round(countPositiveFeedbackPercentage());
   }
-
 
   return (
     <div>
