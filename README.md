@@ -18,7 +18,7 @@ _imageFinder_:
 [Исходные файлы](https://github.com/VladHorii/goit-react-hw/tree/03-imageFinder)
 [Живая страница](http://horiisoft.h1n.ru/hw/03-imageFinder/)
 
-## Homework 4 <hooks>
+## Homework 4 'hooks'
 
 _PhoneBook_:
 [Исходные файлы](https://github.com/VladHorii/goit-react-hw/tree/04-hooks-phonebook)
