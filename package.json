@@ -1,8 +1,8 @@
 {
-  "name": "02-feedback",
+  "name": "04-hooks-feedback",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://horiisoft.h1n.ru/hw/02-feedback",
+  "homepage": "http://horiisoft.h1n.ru/hw/04-hooks-feedback",
   "dependencies": {
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
