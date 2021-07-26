@@ -2,7 +2,6 @@
   "name": "04-movies",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://horiisoft.h1n.ru/hw/04-movies",
   "dependencies": {
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
@@ -27,7 +26,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "netlify deploy -p",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
