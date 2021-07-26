@@ -13,9 +13,8 @@ export default function App() {
     <>
       <Container>
         <Navigation />
-
-        <Switch>
-          <Suspense fallback={<LoaderSpinner />}>
+        <Suspense fallback={<LoaderSpinner />}>
+          <Switch>
             <Route path="/" exact>
               <HomePage />
             </Route>
@@ -28,8 +27,8 @@ export default function App() {
             <Route>
               <NotFoundPage />
             </Route>
-          </Suspense>
-        </Switch>
+          </Switch>
+        </Suspense>
       </Container>
     </>
   );
