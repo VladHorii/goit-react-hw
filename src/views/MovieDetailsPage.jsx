@@ -7,15 +7,16 @@ import {
   useLocation,
   useHistory,
 } from 'react-router-dom';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 
 import Button from '@material-ui/core/Button';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
-import Cast from '../components/Cast';
-import Reviews from '../components/Reviews';
-
 import MovieService from '../services/moviesApi';
+import LoaderSpinner from '../components/LoaderSpinner';
+
+const Cast = lazy(() => import('../components/Cast'));
+const Reviews = lazy(() => import('../components/Reviews'));
+
 const movieService = new MovieService();
 
 const STATIC_IMG_PATH = 'https://image.tmdb.org/t/p/original/';
@@ -106,7 +107,7 @@ export default function MovieDetailsPage() {
             </li>
           </ul>
           <hr />
-          <Suspense fallback="<p>Loading...</p>">
+          <Suspense fallback={<LoaderSpinner />}>
             <Switch>
               <Route path={`${url}/cast`}>
                 <Cast
