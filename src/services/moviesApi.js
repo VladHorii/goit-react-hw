@@ -67,7 +67,7 @@ export default class MovieService {
 
     try {
       const response = await axios.get(
-        `/search/movie/?api_key=${this.key}&query=${this.searchQuery}`,
+        `/search/movie?api_key=${this.key}&query=${this.searchQuery}`,
       );
       return response.data;
     } catch (error) {
