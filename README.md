@@ -31,3 +31,9 @@ _imageFinder_:
 _Feedback_:
 [Исходные файлы](https://github.com/VladHorii/goit-react-hw/tree/04-hooks-feedback)
 [Живая страница](http://horiisoft.h1n.ru/hw/04-hooks-feedback/)
+
+## Homework 6 'phonebook'
+
+_PhoneBook_:
+[Исходные файлы](https://github.com/VladHorii/goit-react-hw/tree/06-phonebook)
+[Живая страница](http://horiisoft.h1n.ru/hw/06-phonebook/)
