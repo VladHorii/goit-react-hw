@@ -43,3 +43,9 @@ _PhoneBook_:
 _PhoneBook_:
 [Исходные файлы](https://github.com/VladHorii/goit-react-hw/tree/07-phonebook)
 [Живая страница](http://horiisoft.h1n.ru/hw/07-phonebook/)
+
+## Homework 8 'phonebook'
+
+_PhoneBook_:
+[Исходные файлы](https://github.com/VladHorii/goit-react-hw/tree/08-phonebook)
+[Живая страница](http://horiisoft.h1n.ru/hw/08-phonebook/)
