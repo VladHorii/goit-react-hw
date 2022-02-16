@@ -1,7 +1,7 @@
-import user from './user.json';
-import ProfileMarkup from './ProfileMarkup';
+import user from '../../data/user.json';
+import { ProfileMarkup } from './ProfileMarkup';
 
-export default function Profile() {
+export const Profile = () => {
   return (
     <ProfileMarkup
       name={user.name}
@@ -11,4 +11,4 @@ export default function Profile() {
       stats={user.stats}
     />
   );
-}
+};
